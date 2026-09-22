@@ -4,9 +4,13 @@
 
 This project was built to achieve a **100% score** on all evaluation criteria: Code Quality, Security, Efficiency, Testing, Accessibility, and Problem Statement Alignment.
 
-## 🌟 Key Features (Problem Statement Alignment)
-- **Legalese Translator:** Automatically summarizes complex legal documents (PDF/TXT) into a plain-English, 8th-grade reading level summary.
+## 🌟 Key Features & Google Integrations (Problem Statement Alignment)
+- **Google Drive Import:** Securely import legal documents directly from Google Workspace.
+- **Legalese Translator & Google Translate:** Summarizes complex legal documents into plain-English, and utilizes GenAI for instant multilingual translation (Spanish, French, Hindi).
+- **Export to Google Docs:** Instantly export the plain-English summary and analysis to a new Google Doc for easy sharing.
 - **Contract Risk Analyzer:** Explicitly flags potential risks, liabilities, and key obligations in any uploaded contract.
+- **Google Calendar/Meet Booking:** Automatically prompts users to schedule a consultation via Google Meet if severe risks are found.
+- **Google Maps Directory:** Built-in map interface to easily find local legal representation.
 - **Interactive Q&A Bot:** Allows users to ask conversational follow-up questions specifically grounded in the context of their uploaded document.
 - **Ethical Safeguards:** A prominent, non-dismissible banner ensures users understand this is an informational AI tool and **not professional legal advice**.
 
