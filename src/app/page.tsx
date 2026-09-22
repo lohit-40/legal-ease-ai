@@ -86,9 +86,33 @@ export default function Home() {
 
       {/* Main Content Area */}
       <div className="main-content">
+        <header className="animate-fade-in" style={{ marginBottom: "32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h1 style={{ fontSize: "2.5rem", background: "linear-gradient(to right, var(--text-main), var(--accent-primary))", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Lexa AI</h1>
+            <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>Making Legal Info Accessible</p>
+          </div>
+        </header>
+
+        {/* Mandatory Disclaimer for Legal AI Applications */}
+        <div 
+          id="disclaimer"
+          role="alert" 
+          aria-live="polite"
+          className="animate-fade-in delay-100"
+          style={{ marginBottom: "32px", display: "flex", alignItems: "flex-start", gap: "16px" }}
+        >
+          <span aria-hidden="true" style={{ fontSize: "1.5rem" }}>⚠️</span>
+          <div>
+            <strong style={{ display: "block", marginBottom: "4px", color: "var(--error)", letterSpacing: "0.05em" }}>NOT PROFESSIONAL LEGAL ADVICE</strong>
+            <span style={{ fontSize: "0.95rem", color: "rgba(255,255,255,0.8)" }}>
+              Lexa provides AI-generated informational assistance to help you understand legal documents. It is not a substitute for professional legal counsel. Always consult a qualified attorney for specific legal issues.
+            </span>
+          </div>
+        </div>
+
         {activeTab === "dashboard" && (
           <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-            <section className="glass-panel" aria-labelledby="upload-heading">
+            <section className="glass-panel animate-fade-in delay-200" aria-labelledby="upload-heading">
               <h2 id="upload-heading" style={{ marginBottom: "16px" }}>Analyze a Legal Document</h2>
               <p style={{ color: "var(--text-muted)", marginBottom: "24px" }}>
                 Upload a document locally, or import directly from Google Drive.

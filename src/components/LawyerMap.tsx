@@ -20,28 +20,31 @@ export default function LawyerMap() {
           height="100%"
           style={{ border: 0 }}
           loading="lazy"
-          allowFullScreen
-          referrerPolicy="no-referrer-when-downgrade"
-          src="https://www.google.com/maps/embed/v1/search?key=YOUR_API_KEY&q=lawyers+near+me"
-        ></iframe>
-        
+      <div className="map-container" style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        background: "linear-gradient(135deg, hsla(230, 20%, 15%, 0.8), hsla(190, 100%, 20%, 0.4))",
+        backgroundSize: "cover",
+        position: "relative",
+        border: "1px solid var(--glass-border)",
+        borderRadius: "12px",
+        boxShadow: "inset 0 0 40px rgba(0,0,0,0.8)"
+      }}>
         {/* Fallback overlay since we don't have a real API key in this demo */}
         <div style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          background: "var(--surface)",
-          padding: "16px 24px",
-          borderRadius: "8px",
-          border: "1px solid var(--surface-border)",
+          background: "rgba(0,0,0,0.6)",
+          padding: "24px 48px",
+          borderRadius: "16px",
+          backdropFilter: "blur(12px)",
+          border: "1px solid var(--glass-border)",
           textAlign: "center"
         }}>
-          <svg className="google-icon" style={{ margin: "0 auto 8px" }} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path fill="#EA4335" d="M24 4C16.27 4 10 10.27 10 18c0 10.5 14 26 14 26s14-15.5 14-26c0-7.73-6.27-14-14-14zm0 19c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
-          </svg>
-          <p style={{ fontWeight: 600 }}>Google Maps Directory</p>
-          <p style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>(Map Preview - API Key Required)</p>
+          <span style={{ fontSize: "2.5rem", marginBottom: "8px", display: "block" }}>📍</span>
+          <h3 style={{ color: "white", marginBottom: "4px" }}>Google Maps Integrated Directory</h3>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>(Requires API Key for Live Map Preview)</p>
         </div>
       </div>
     </div>
