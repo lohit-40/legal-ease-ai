@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
+import { Outfit } from "next/font/google";
 import "./globals.css";
+
+const outfit = Outfit({
+  variable: "--font-outfit",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Lexa | Legal Expert Assistant",
@@ -17,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={`${outfit.variable} antialiased`}>
         <a href="#main-content" className="sr-only">Skip to main content</a>
         <header className="container animate-fade-in">
           <div>

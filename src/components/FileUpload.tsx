@@ -62,14 +62,16 @@ export default function FileUpload({ onUpload, disabled = false }: FileUploadPro
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onDrop={onDrop}
+        className="glass-panel"
         style={{
-          border: `2px dashed ${isDragging ? "var(--primary)" : "var(--surface-border)"}`,
-          borderRadius: "var(--radius)",
+          border: isDragging ? "2px solid var(--accent-primary)" : "1px solid var(--glass-border)",
+          background: isDragging ? "hsla(190, 100%, 50%, 0.1)" : "rgba(0,0,0,0.2)",
           padding: "48px 24px",
           textAlign: "center",
-          transition: "border-color 0.2s ease, background 0.2s ease",
-          background: isDragging ? "hsla(210, 100%, 50%, 0.05)" : "transparent",
-          opacity: disabled ? 0.5 : 1,
+          cursor: disabled ? "not-allowed" : "pointer",
+          opacity: disabled ? 0.6 : 1,
+          transition: "all 0.2s ease",
+          boxShadow: "inset 0 4px 12px rgba(0,0,0,0.3)",
           pointerEvents: disabled ? "none" : "auto",
         }}
       >
