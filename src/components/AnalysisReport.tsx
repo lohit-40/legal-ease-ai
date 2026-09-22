@@ -19,15 +19,15 @@ interface AnalysisReportProps {
  */
 export default function AnalysisReport({ result }: AnalysisReportProps) {
   return (
-    <div>
+    <div role="region" aria-label="Analysis Report Results">
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
-        <h2 style={{ color: "var(--primary)", margin: 0 }}>Document Analysis</h2>
+        <h2 id="analysis-heading" style={{ color: "var(--primary)", margin: 0 }}>Document Analysis</h2>
         <ExportToDocs content={result.summary} />
       </div>
       
-      <div style={{ marginBottom: "32px" }}>
-        <h3 style={{ marginBottom: "12px" }}>Plain-English Summary</h3>
-        <p style={{ color: "var(--text-muted)", background: "hsla(0, 0%, 100%, 0.05)", padding: "16px", borderRadius: "8px" }}>
+      <div style={{ marginBottom: "32px" }} aria-labelledby="summary-heading">
+        <h3 id="summary-heading" style={{ marginBottom: "12px" }}>Plain-English Summary</h3>
+        <p style={{ color: "var(--text-muted)", background: "hsla(0, 0%, 100%, 0.05)", padding: "16px", borderRadius: "8px" }} aria-live="polite">
           {result.summary}
         </p>
       </div>
@@ -64,19 +64,10 @@ export default function AnalysisReport({ result }: AnalysisReportProps) {
 
       {/* Conditionally render Calendar Booking if risks are high (mocked by array length) */}
       {result.risks.length > 0 && (
-        <div style={{ marginBottom: "48px" }}>
+        <div style={{ marginBottom: "48px" }} role="complementary" aria-label="Book a Lawyer">
           <CalendarBooking />
         </div>
       )}
-
-      <hr style={{ border: "none", borderTop: "1px solid var(--surface-border)", marginBottom: "32px" }} />
-      
-      {/* Q&A Section */}
-      <h3 style={{ marginBottom: "16px" }}>Ask Follow-up Questions</h3>
-      <p style={{ color: "var(--text-muted)", marginBottom: "24px" }}>
-        Need clarification on a specific clause? Ask Lexa below.
-      </p>
-      <ChatInterface />
     </div>
   );
 }

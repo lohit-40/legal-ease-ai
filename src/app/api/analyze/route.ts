@@ -76,7 +76,9 @@ export async function POST(req: Request) {
 
     const parsedResult = JSON.parse(resultText);
     
-    return NextResponse.json(parsedResult);
+    return NextResponse.json(parsedResult, {
+      headers: { "Cache-Control": "s-maxage=60, stale-while-revalidate" }
+    });
   } catch (error: unknown) {
     console.error("API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

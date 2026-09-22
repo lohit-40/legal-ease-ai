@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import FileUpload from "@/components/FileUpload";
-import AnalysisReport from "@/components/AnalysisReport";
-import GoogleDrivePicker from "@/components/GoogleDrivePicker";
-import LawyerMap from "@/components/LawyerMap";
+import dynamic from "next/dynamic";
+
+// Dynamic imports for heavy components to max out Next.js Efficiency metrics
+const FileUpload = dynamic(() => import("@/components/FileUpload"), { ssr: false });
+const AnalysisReport = dynamic(() => import("@/components/AnalysisReport"), { ssr: false });
+const GoogleDrivePicker = dynamic(() => import("@/components/GoogleDrivePicker"), { ssr: false });
+const LawyerMap = dynamic(() => import("@/components/LawyerMap"), { ssr: false });
+const ChatInterface = dynamic(() => import("@/components/ChatInterface"), { ssr: false });
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -64,8 +68,18 @@ export default function Home() {
         <div 
           className={`sidebar-item ${activeTab === "directory" ? "active" : ""}`}
           onClick={() => setActiveTab("directory")}
+          role="button"
+          aria-pressed={activeTab === "directory"}
         >
           🗺️ Legal Directory
+        </div>
+        <div 
+          className={`sidebar-item ${activeTab === "chat" ? "active" : ""}`}
+          onClick={() => setActiveTab("chat")}
+          role="button"
+          aria-pressed={activeTab === "chat"}
+        >
+          💬 Ask Lexa Chatbot
         </div>
         
         <div style={{ marginTop: "auto", borderTop: "1px solid var(--surface-border)", paddingTop: "24px" }}>
@@ -149,8 +163,14 @@ export default function Home() {
         )}
 
         {activeTab === "directory" && (
-          <div className="animate-fade-in">
+          <div className="animate-fade-in" role="region" aria-label="Legal Directory">
             <LawyerMap />
+          </div>
+        )}
+
+        {activeTab === "chat" && (
+          <div className="animate-fade-in" role="region" aria-label="AI Legal Assistant Chat">
+            <ChatInterface />
           </div>
         )}
       </div>
