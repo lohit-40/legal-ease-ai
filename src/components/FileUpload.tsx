@@ -15,7 +15,7 @@ export default function FileUpload({ onUpload, disabled = false }: FileUploadPro
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const validateAndUpload = (file: File) => {
+  const validateAndUpload = useCallback((file: File) => {
     setError(null);
     const validTypes = ["application/pdf", "text/plain"];
     if (!validTypes.includes(file.type)) {
@@ -27,7 +27,7 @@ export default function FileUpload({ onUpload, disabled = false }: FileUploadPro
       return;
     }
     onUpload(file);
-  };
+  }, [onUpload]);
 
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -48,7 +48,7 @@ export default function FileUpload({ onUpload, disabled = false }: FileUploadPro
       validateAndUpload(e.dataTransfer.files[0]);
       e.dataTransfer.clearData();
     }
-  }, [disabled]);
+  }, [disabled, validateAndUpload]);
 
   const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -94,14 +94,6 @@ export default function FileUpload({ onUpload, disabled = false }: FileUploadPro
         <label 
           htmlFor="file-upload" 
           className="btn-primary" 
-          role="button" 
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              document.getElementById("file-upload")?.click();
-            }
-          }}
           aria-disabled={disabled}
           style={{ display: "inline-block" }}
         >

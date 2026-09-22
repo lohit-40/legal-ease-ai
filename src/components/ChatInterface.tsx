@@ -39,7 +39,7 @@ export default function ChatInterface() {
       const data = await res.json();
       
       setMessages(prev => [...prev, { role: "ai", content: data.reply }]);
-    } catch (err) {
+    } catch {
       setMessages(prev => [...prev, { role: "ai", content: "Sorry, I encountered an error. Please try asking again." }]);
     } finally {
       setIsLoading(false);

@@ -12,7 +12,7 @@ describe("ChatInterface", () => {
 
   it("renders the chat interface", () => {
     render(<ChatInterface />);
-    expect(screen.getByPlaceholderText(/Ask Lexa a legal question/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/e.g., Can they terminate this contract without notice/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Send/i })).toBeInTheDocument();
   });
 
@@ -24,7 +24,7 @@ describe("ChatInterface", () => {
 
     render(<ChatInterface />);
     
-    const input = screen.getByPlaceholderText(/Ask Lexa a legal question/i);
+    const input = screen.getByPlaceholderText(/e.g., Can they terminate this contract without notice/i);
     const button = screen.getByRole("button", { name: /Send/i });
 
     fireEvent.change(input, { target: { value: "What is an NDA?" } });
@@ -46,14 +46,14 @@ describe("ChatInterface", () => {
 
     render(<ChatInterface />);
     
-    const input = screen.getByPlaceholderText(/Ask Lexa a legal question/i);
+    const input = screen.getByPlaceholderText(/e.g., Can they terminate this contract without notice/i);
     const button = screen.getByRole("button", { name: /Send/i });
 
     fireEvent.change(input, { target: { value: "Error test" } });
     fireEvent.click(button);
 
     await waitFor(() => {
-      expect(screen.getByText(/Failed to get a response/i)).toBeInTheDocument();
+      expect(screen.getByText(/Sorry, I encountered an error/i)).toBeInTheDocument();
     });
   });
 });

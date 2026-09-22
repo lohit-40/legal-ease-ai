@@ -8,7 +8,8 @@ export class GoogleCalendarService {
    * @param topic - The topic of the consultation.
    * @returns A promise resolving to a simulated Google Meet URL.
    */
-  static async bookConsultation(topic: string = "Legal Review"): Promise<string> {
+  static async bookConsultation(_topic: string = "Legal Review"): Promise<string> {
+    console.log("Booking consultation for:", _topic);
     // Simulate backend processing time and API latency
     return new Promise((resolve) => {
       setTimeout(() => {

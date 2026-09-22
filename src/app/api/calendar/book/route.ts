@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GoogleCalendarService } from "@/lib/services/googleCalendarService";
 
-export async function POST(req: NextRequest) {
+export async function POST(_req: NextRequest) {
   try {
+    console.log("Calendar Request received:", _req.url);
     // We could parse body here for topic, but keeping it simple
     const meetUrl = await GoogleCalendarService.bookConsultation("Urgent Legal Review");
 

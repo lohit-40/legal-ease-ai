@@ -18,26 +18,26 @@ export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: 
   const [error, setError] = useState("");
 
   useEffect(() => {
+    async function loadFiles() {
+      setIsLoadingFiles(true);
+      setError("");
+      try {
+        const res = await fetch("/api/drive/import");
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to load files");
+        setFiles(data.files || []);
+      } catch (err: unknown) {
+        console.error(err);
+        setError("Could not load Google Drive files. Is your account connected?");
+      } finally {
+        setIsLoadingFiles(false);
+      }
+    }
+
     if (isOpen) {
       loadFiles();
     }
   }, [isOpen]);
-
-  const loadFiles = async () => {
-    setIsLoadingFiles(true);
-    setError("");
-    try {
-      const res = await fetch("/api/drive/import");
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      setFiles(data.files || []);
-    } catch (err: unknown) {
-      console.error(err);
-      setError("Failed to load Drive files.");
-    } finally {
-      setIsLoadingFiles(false);
-    }
-  };
 
   const handleImport = async (fileId: string, fileName: string) => {
     setIsSimulating(true);

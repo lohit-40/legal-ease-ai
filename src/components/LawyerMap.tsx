@@ -12,14 +12,6 @@ export default function LawyerMap() {
         Need more than just AI? Search the Google Maps directory for highly-rated legal professionals near you.
       </p>
       
-      <div className="map-container">
-        {/* Simple iframe embedding Google Maps for "lawyers near me". 
-            In a real app, this would use the Maps JavaScript API with proper keys. */}
-        <iframe
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          loading="lazy"
       <div className="map-container" style={{
         display: "flex",
         flexDirection: "column",

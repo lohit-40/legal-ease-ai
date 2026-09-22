@@ -1,7 +1,10 @@
 import React from 'react';
+import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { axe } from 'jest-axe';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import FileUpload from '../src/components/FileUpload';
+
+expect.extend(toHaveNoViolations);
 
 describe('FileUpload Component', () => {
   const mockOnUpload = jest.fn();

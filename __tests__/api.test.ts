@@ -1,8 +1,11 @@
+/**
+ * @jest-environment node
+ */
 import { POST as ChatPOST } from "@/app/api/chat/route";
 import { GET as DriveGET } from "@/app/api/drive/import/route";
 
 // Mock the Next Request
-function createMockRequest(body?: any) {
+function createMockRequest(body?: unknown) {
   return new Request("http://localhost", {
     method: body ? "POST" : "GET",
     body: body ? JSON.stringify(body) : undefined,
@@ -23,7 +26,7 @@ describe("API Routes Tests", () => {
   describe("Drive Import API", () => {
     it("handles GET request properly", async () => {
       // It mocks the drive service and returns 200
-      const req = createMockRequest();
+      // const req = createMockRequest();
       const res = await DriveGET();
       expect(res.status).toBe(200);
       const data = await res.json();
