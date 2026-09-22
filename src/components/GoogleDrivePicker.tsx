@@ -4,11 +4,17 @@ import React, { useState, useEffect } from "react";
  * GoogleDrivePicker Component
  * Calls the backend API to fetch files and import documents from Google Drive.
  */
+interface DriveFile {
+  id: string;
+  name: string;
+  type: string;
+}
+
 export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: (file: File) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoadingFiles, setIsLoadingFiles] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [files, setFiles] = useState<any[]>([]);
+  const [files, setFiles] = useState<DriveFile[]>([]);
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -25,7 +31,8 @@ export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error);
       setFiles(data.files || []);
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error(err);
       setError("Failed to load Drive files.");
     } finally {
       setIsLoadingFiles(false);
@@ -47,8 +54,8 @@ export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: 
       const mockFile = new File([data.content], data.fileName, { type: "text/plain" });
       onFileSelected(mockFile);
       setIsOpen(false);
-    } catch (err) {
-      setError("Failed to import file.");
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to import file");
     } finally {
       setIsSimulating(false);
     }

@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const files = await GoogleDriveService.listRecentFiles();
     return NextResponse.json({ success: true, files });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Drive List Error:", error);
     return NextResponse.json({ error: "Failed to list drive files" }, { status: 500 });
   }
@@ -22,8 +22,8 @@ export async function POST(req: NextRequest) {
     const content = await GoogleDriveService.getFileContent(fileId);
     
     return NextResponse.json({ success: true, content, fileName });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Drive Import Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to import file" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to import file" }, { status: 500 });
   }
 }

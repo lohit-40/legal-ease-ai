@@ -11,7 +11,7 @@ export default function Home() {
   
   // Dashboard State
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<any>(null);
+  const [analysisResult, setAnalysisResult] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("English");
 
@@ -34,8 +34,8 @@ export default function Home() {
 
       const data = await res.json();
       setAnalysisResult({ ...data, file });
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred.");
     } finally {
       setIsAnalyzing(false);
     }

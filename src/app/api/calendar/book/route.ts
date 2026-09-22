@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
     const meetUrl = await GoogleCalendarService.bookConsultation("Urgent Legal Review");
 
     return NextResponse.json({ success: true, meetUrl });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Calendar Booking Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to book consultation" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to book consultation" }, { status: 500 });
   }
 }

@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
     const docUrl = await GoogleDocsService.exportContent(content);
 
     return NextResponse.json({ success: true, url: docUrl });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Docs Export Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to export document" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to export document" }, { status: 500 });
   }
 }
