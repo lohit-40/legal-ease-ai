@@ -1,4 +1,4 @@
-import { NextResponse } from "next";
+import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
@@ -38,7 +38,7 @@ export async function POST(req: Request) {
       contents: prompt,
     });
 
-    return NextResponse.json({ reply: response.text() });
+    return NextResponse.json({ reply: response.text });
   } catch (error: any) {
     console.error("API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

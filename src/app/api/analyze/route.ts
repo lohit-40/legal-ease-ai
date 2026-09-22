@@ -1,4 +1,4 @@
-import { NextResponse } from "next";
+import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import DOMPurify from "dompurify";
 import { JSDOM } from "jsdom";
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
       },
     });
 
-    const resultText = response.text();
+    const resultText = response.text;
     if (!resultText) {
       throw new Error("Failed to generate content.");
     }
