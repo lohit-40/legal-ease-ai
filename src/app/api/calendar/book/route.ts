@@ -1,0 +1,14 @@
+import { NextRequest, NextResponse } from "next/server";
+import { GoogleCalendarService } from "@/lib/services/googleCalendarService";
+
+export async function POST(req: NextRequest) {
+  try {
+    // We could parse body here for topic, but keeping it simple
+    const meetUrl = await GoogleCalendarService.bookConsultation("Urgent Legal Review");
+
+    return NextResponse.json({ success: true, meetUrl });
+  } catch (error: any) {
+    console.error("Calendar Booking Error:", error);
+    return NextResponse.json({ error: error.message || "Failed to book consultation" }, { status: 500 });
+  }
+}

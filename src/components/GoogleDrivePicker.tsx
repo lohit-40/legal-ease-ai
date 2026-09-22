@@ -1,22 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 /**
  * GoogleDrivePicker Component
- * Simulates a Google Drive integration for importing legal documents.
+ * Calls the backend API to fetch files and import documents from Google Drive.
  */
 export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: (file: File) => void }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoadingFiles, setIsLoadingFiles] = useState(false);
   const [isSimulating, setIsSimulating] = useState(false);
+  const [files, setFiles] = useState<any[]>([]);
+  const [error, setError] = useState("");
 
-  const handleSimulatedImport = () => {
+  useEffect(() => {
+    if (isOpen) {
+      loadFiles();
+    }
+  }, [isOpen]);
+
+  const loadFiles = async () => {
+    setIsLoadingFiles(true);
+    setError("");
+    try {
+      const res = await fetch("/api/drive/import");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      setFiles(data.files || []);
+    } catch (err: any) {
+      setError("Failed to load Drive files.");
+    } finally {
+      setIsLoadingFiles(false);
+    }
+  };
+
+  const handleImport = async (fileId: string, fileName: string) => {
     setIsSimulating(true);
-    // Simulate network delay for picking a file
-    setTimeout(() => {
-      const mockFile = new File(["This is a mock contract imported from Google Drive.\n\nTerm: 5 Years.\nLiability: Uncapped."], "Drive_Contract_Export.txt", { type: "text/plain" });
+    try {
+      const res = await fetch("/api/drive/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fileId, fileName })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+
+      // Convert the fetched content into a File object for the app to process
+      const mockFile = new File([data.content], data.fileName, { type: "text/plain" });
       onFileSelected(mockFile);
-      setIsSimulating(false);
       setIsOpen(false);
-    }, 1500);
+    } catch (err) {
+      setError("Failed to import file.");
+    } finally {
+      setIsSimulating(false);
+    }
   };
 
   return (
@@ -46,23 +81,33 @@ export default function GoogleDrivePicker({ onFileSelected }: { onFileSelected: 
               Select a legal document from your Drive.
             </p>
             
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px", textAlign: "left" }}>
-              <div 
-                style={{ padding: "12px", border: "1px solid var(--primary)", borderRadius: "8px", background: "hsla(210, 100%, 50%, 0.1)", cursor: "pointer" }}
-                onClick={handleSimulatedImport}
-              >
-                📄 Employment_Contract_2026.pdf
-              </div>
-              <div style={{ padding: "12px", border: "1px solid var(--surface-border)", borderRadius: "8px", opacity: 0.5 }}>
-                📊 Q3_Financial_Report.xlsx
-              </div>
+            {error && <p style={{ color: "var(--error)", marginBottom: "16px", fontSize: "0.8rem" }}>{error}</p>}
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px", textAlign: "left", minHeight: "100px" }}>
+              {isLoadingFiles ? (
+                <p style={{ textAlign: "center", color: "var(--text-muted)" }}>Loading files...</p>
+              ) : (
+                files.map(file => (
+                  <div 
+                    key={file.id}
+                    style={{ 
+                      padding: "12px", 
+                      border: "1px solid var(--surface-border)", 
+                      borderRadius: "8px", 
+                      cursor: file.type === "document" ? "pointer" : "not-allowed",
+                      background: file.type === "document" ? "hsla(210, 100%, 50%, 0.1)" : "transparent",
+                      opacity: file.type === "document" ? 1 : 0.5
+                    }}
+                    onClick={() => file.type === "document" && !isSimulating && handleImport(file.id, file.name)}
+                  >
+                    {file.type === "document" ? "📄" : "📊"} {file.name}
+                  </div>
+                ))
+              )}
             </div>
 
             <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
               <button className="btn-secondary" onClick={() => setIsOpen(false)} disabled={isSimulating}>Cancel</button>
-              <button className="btn-primary" onClick={handleSimulatedImport} disabled={isSimulating}>
-                {isSimulating ? "Importing..." : "Select"}
-              </button>
             </div>
           </div>
         </div>

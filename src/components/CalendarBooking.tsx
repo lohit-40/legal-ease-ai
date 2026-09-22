@@ -2,23 +2,36 @@ import React, { useState } from "react";
 
 /**
  * CalendarBooking Component
- * Simulates booking a consultation on Google Calendar / Meet.
+ * Calls the backend API to book a consultation on Google Calendar / Meet.
  */
 export default function CalendarBooking() {
-  const [status, setStatus] = useState<"idle" | "booking" | "booked">("idle");
+  const [status, setStatus] = useState<"idle" | "booking" | "booked" | "error">("idle");
+  const [meetUrl, setMeetUrl] = useState("");
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     setStatus("booking");
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/calendar/book", { method: "POST" });
+      const data = await res.json();
+      
+      if (!res.ok) throw new Error(data.error);
+      
+      setMeetUrl(data.meetUrl);
       setStatus("booked");
-    }, 1500);
+    } catch (error) {
+      console.error(error);
+      setStatus("error");
+    }
   };
 
   if (status === "booked") {
     return (
       <div className="glass-panel" style={{ textAlign: "center", border: "1px solid var(--success)" }}>
         <h3 style={{ color: "var(--success)", marginBottom: "8px" }}>Consultation Scheduled!</h3>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>A Google Meet invite has been added to your Google Calendar.</p>
+        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "16px" }}>A Google Meet invite has been added to your Google Calendar.</p>
+        <a href={meetUrl} target="_blank" rel="noopener noreferrer" className="btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>
+          Join Google Meet
+        </a>
       </div>
     );
   }
@@ -29,6 +42,7 @@ export default function CalendarBooking() {
       <p style={{ color: "var(--text-muted)", marginBottom: "24px", fontSize: "0.9rem" }}>
         Lexa identified high-risk clauses in this document. Schedule a quick review with a vetted legal professional.
       </p>
+      {status === "error" && <p style={{ color: "var(--error)", marginBottom: "16px", fontSize: "0.8rem" }}>Failed to schedule. Please try again.</p>}
       <button 
         onClick={handleBooking}
         className="btn-google"
