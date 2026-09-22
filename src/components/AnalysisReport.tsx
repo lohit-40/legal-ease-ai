@@ -1,5 +1,7 @@
 import React from "react";
 import ChatInterface from "./ChatInterface";
+import ExportToDocs from "./ExportToDocs";
+import CalendarBooking from "./CalendarBooking";
 
 export interface AnalysisResultData {
   summary: string;
@@ -14,13 +16,14 @@ interface AnalysisReportProps {
 /**
  * AnalysisReport Component
  * Displays the AI-generated analysis in an accessible, readable format.
- * 
- * @param {AnalysisReportProps} props - The component props.
  */
 export default function AnalysisReport({ result }: AnalysisReportProps) {
   return (
     <div>
-      <h2 style={{ marginBottom: "24px", color: "var(--primary)" }}>Document Analysis</h2>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <h2 style={{ color: "var(--primary)", margin: 0 }}>Document Analysis</h2>
+        <ExportToDocs content={result.summary} />
+      </div>
       
       <div style={{ marginBottom: "32px" }}>
         <h3 style={{ marginBottom: "12px" }}>Plain-English Summary</h3>
@@ -58,6 +61,13 @@ export default function AnalysisReport({ result }: AnalysisReportProps) {
           </ul>
         </div>
       </div>
+
+      {/* Conditionally render Calendar Booking if risks are high (mocked by array length) */}
+      {result.risks.length > 0 && (
+        <div style={{ marginBottom: "48px" }}>
+          <CalendarBooking />
+        </div>
+      )}
 
       <hr style={{ border: "none", borderTop: "1px solid var(--surface-border)", marginBottom: "32px" }} />
       

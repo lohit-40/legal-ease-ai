@@ -10,6 +10,7 @@ export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = formData.get("document") as File;
+    const targetLanguage = formData.get("targetLanguage") as string || "English";
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -49,6 +50,8 @@ export async function POST(req: Request) {
       1. "summary": A plain-English summary of the document (at an 8th-grade reading level).
       2. "risks": An array of strings highlighting potential risks or liabilities.
       3. "obligations": An array of strings highlighting key obligations.
+      
+      TRANSLATE all your output values into: ${targetLanguage}.
       
       Document Text:
       """
