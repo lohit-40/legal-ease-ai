@@ -1,21 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import dynamic from "next/dynamic";
-
-// Dynamic imports for heavy components to max out Next.js Efficiency metrics
-const FileUpload = dynamic(() => import("@/components/FileUpload"), { ssr: false });
-const AnalysisReport = dynamic(() => import("@/components/AnalysisReport"), { ssr: false });
-const GoogleDrivePicker = dynamic(() => import("@/components/GoogleDrivePicker"), { ssr: false });
-const LawyerMap = dynamic(() => import("@/components/LawyerMap"), { ssr: false });
-const ChatInterface = dynamic(() => import("@/components/ChatInterface"), { ssr: false });
+import FileUpload from "@/components/FileUpload";
+import AnalysisReport from "@/components/AnalysisReport";
+import GoogleDrivePicker from "@/components/GoogleDrivePicker";
+import LawyerMap from "@/components/LawyerMap";
+import ChatInterface from "@/components/ChatInterface";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("dashboard");
   
   // Dashboard State
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<Record<string, unknown> | null>(null);
+  interface PageAnalysisResult {
+    summary: string;
+    risks: string[];
+    obligations: string[];
+    file: File;
+  }
+  const [analysisResult, setAnalysisResult] = useState<PageAnalysisResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("English");
 
